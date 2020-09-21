@@ -1,20 +1,70 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { ThemeProvider } from "styled-components";
 import { useOnClickOutside } from "./hooks";
 import { GlobalStyles } from "./global";
 import { theme } from "./theme";
 import { Burger, Menu } from "./components";
 import FocusLock from "react-focus-lock";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import Home from "./components/Pages/Home";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+import Header from "./components/Layout/Header";
+import Axios from "axios";
+import "./App.css";
+import UserContext from "./context/UserContext";
 
 function App() {
-  const [open, setOpen] = useState(false);
-  const node = useRef();
-  const menuId = "main-menu";
+  const [userData, setUserData] = useState({
+    token: undefined,
+    user: undefined,
+  });
 
-  useOnClickOutside(node, () => setOpen(false));
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      let token = localStorage.getItem("auth-token");
+      if (token === null) {
+        localStorage.setItem("auth-token", "");
+        token = "";
+      }
+      const tokenRes = await Axios.post(
+        "https://traffic-check.herokuapp.com/api/v1/tokenIsValid",
+        null,
+        { headers: { "x-auth-token": token } }
+      );
+      if (tokenRes.data) {
+        const userRes = await Axios.get(
+          "https://traffic-check.herokuapp.com/api/v1/loggedIn_user",
+          { headers: { "x-auth-token": token } }
+        );
+        setUserData({
+          token,
+          user: userRes.data,
+        });
+      }
+    };
+  }, []);
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
+      <BrowserRouter>
+        <UserContext.Provider value={{ userData, setUserData }}>
+          <Header />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+          </Switch>
+        </UserContext.Provider>
+      </BrowserRouter>
+    </>
+  );
+}
+
+export default App;
+
+/**
+ * <ThemeProvider theme={theme}>
       <>
         <GlobalStyles />
         <div ref={node}>
@@ -33,7 +83,4 @@ function App() {
         </div>
       </>
     </ThemeProvider>
-  );
-}
-
-export default App;
+ */

@@ -1,19 +1,98 @@
-.wrapper {
+@import url("https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500&display=swap");
+/* reset */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol {
+  font-size: 2rem;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 1em 0;
+}
+
+img {
+  border-radius: 5px;
+  height: auto;
+  width: 10rem;
+}
+
+div {
+  text-align: center;
+}
+
+small {
+  display: block;
+}
+
+a {
+  color: rgb(47, 53, 34);
+  text-decoration: unset;
+}
+ul {
+  margin-left: 1.5rem;
+  list-style: none;
+}
+button,
+input[type="submit"] {
+  border: none;
+  background: none;
+  color: unset;
+  cursor: pointer;
+}
+
+/*General stuff*/
+body {
+  font-family: "Roboto", sans-serif;
+}
+.page {
+  padding: 1rem;
+}
+/*Header*/
+#header {
+  height: 70px;
+  background-color: green;
+  justify-content: space-between;
   display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  align-items: center;
 }
-
-.wrapper > * {
-  flex-shrink: 0;
+#header .title {
+  margin: 2;
+  color: wheat;
 }
-
-.content {
-  padding: 0 2.4rem;
-  margin-top: 3.6rem;
-  margin-bottom: 3.6rem;
+#header .auth-options {
+  height: 100%;
+  display: flex;
 }
-
-.hidden {
-  display: none;
+#header .auth-options button {
+  background-color: darkolivegreen;
+  padding: 0 1rem;
+  color: white;
+  font-size: 1.1rem;
+}
+#header .auth-options button:hover {
+  background-color: lightsalmon;
+}
+@media screen and (max-width: 550px) {
+  #header .title {
+    font-size: 1.2rem;
+  }
 }
